@@ -237,8 +237,7 @@ def registerEvent(eventname):
                 # for eventname in db.event.find():
                 #     eventnames.append(eventname)
                 print(x)
-                return render_template('event-page.html',eventnames=x)
-                pass
+                return render_template('event-page.html',eventnames=list(x))
             else:
                 return redirect(url_for("start"))
 
