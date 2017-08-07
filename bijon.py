@@ -244,7 +244,7 @@ def registerEvent(eventname):
             else:
                 return redirect(url_for("start"))
 
-         except Exception as e:
+        except Exception as e:
             print(str(e), file=sys.stdout)
     else:
         x = db.event.find_one({"name":eventname},{"end":1,"traits":1,"_id":0})
@@ -255,7 +255,7 @@ def registerEvent(eventname):
                 if vol['primary'] in x['traits']:
                     db.event.update({"name":eventname},{"$push":{"volunteers":vol['_id']}})
 
-@app.route("/ngo-dashboard/events",methods='POST')
+@app.route("/ngo-dashboard/events",methods=['POST'])
 def ngoDashEvents():
     if 'user' in session:
         if session['user'][1]==1:
@@ -321,8 +321,8 @@ def confirmation(name, mail, reg, state, city):
     # print(names, file=sys.stdout)
     # print(reg, file=sys.stdout)
 
-    ngo = db.ngo
-    x = ngo.update({"name":{"$eq":name}},{"$set":{"name-verified":True}})
+        ngo = db.ngo
+        x = ngo.update({"name":{"$eq":name}},{"$set":{"name-verified":True}})
         #TODO- send mail to confirm that the ngo has been added
     else:
         ngo = db.ngo
