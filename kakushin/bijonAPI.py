@@ -297,26 +297,27 @@ def chapterAssign(testid):
         db.chapter.update({"_id":ObjectId(str(i_d))},{"$push":{"volunteer":x['_id']}})
         ch_id = db.chapter.update({"_id":ObjectId(str(i_d))},{"$push":{"volunteer":x['name']}})
         db.volunteers.update({"_id":ObjectId(str(testid))},{"$set":{"chapter":i_d}})
+        db.volunteers.update({"_id":ObjectId(str(testid))},{"$set":{"chapter-head":1}})
         #TODO Send email to recipient
 
 
-def getNGO():
-    pg = 1
-    url = "http://ngodarpan.gov.in/index.php/home/statewise_ngo/3203/27/"
-    names=[]
-    reg=[]
-    while(pg<321):
-        res = requests.get((url+str(pg)))
-        res.raise_for_status()
-        soup = bs4.BeautifulSoup(res.text,"html.parser")
-        table = soup.select("td")
-        #print(table)
-        for x in range(1,51,5):
-            names.append(table[x].getText().lstrip())
-        for x in range(2,51,5):
-            reg.append(table[x].getText().lstrip().split(',')[0])
-        pg+=1
-    db.ngolist.insert({"name":name,"reg":reg})
+# def getNGO():
+#     pg = 1
+#     url = "http://ngodarpan.gov.in/index.php/home/statewise_ngo/3203/27/"
+#     names=[]
+#     reg=[]
+#     while(pg<321):
+#         res = requests.get((url+str(pg)))
+#         res.raise_for_status()
+#         soup = bs4.BeautifulSoup(res.text,"html.parser")
+#         table = soup.select("td")
+#         #print(table)
+#         for x in range(1,51,5):
+#             names.append(table[x].getText().lstrip())
+#         for x in range(2,51,5):
+#             reg.append(table[x].getText().lstrip().split(',')[0])
+#         pg+=1
+#     db.ngolist.insert({"name":name,"reg":reg})
 
 
 @app.route('/dashboard', methods=['POST'])
