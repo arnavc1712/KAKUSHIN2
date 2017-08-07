@@ -163,6 +163,8 @@ def chapterAssign(testid):
         ch_id = db.chapter.update({"_id":ObjectId(str(i_d))},{"$push":{"volunteer":x['name']}})
         db.volunteers.update({"_id":ObjectId(str(testid))},{"$set":{"chapter":i_d}})
         db.volunteers.update({"_id":ObjectId(str(testid))},{"$set":{"chapter-head":1}})
+        # session.pop('user',None)
+        # session['user']=
         #TODO Send email to recipient
 
 
@@ -227,11 +229,15 @@ def eventRegister():
 def registerEvent(eventname):
     if request.method=='GET':
         try:
-            x = db.event.find_one({"eventname":eventname},{"user":1})
+            x = db.event.find_one({"eventname":eventname},{"user":1,"eventname":1,"_id":0,"count":1,"details":1})
             print(x)
 
             if x:
-                #return render_template('register.html')
+                eventnames=[]
+                for eventname in db.event.find():
+                    eventnames.append(eventname["eventname"])
+
+                return render_template('register.html',eventnames=eventnames)
                 pass
             else:
                 return redirect(url_for("start"))
@@ -284,9 +290,14 @@ def dashboard():
         # eventnames = db.event.find({"user":session['user'][0]},{"name":1,"_id":0})
         for eventname in db.event.find():
             eventnames.append(eventname["eventname"])
+    elif 'user' in session and session['user'][1]==0:
 
         return render_template('dashboard-ngo.html', eventnames=eventnames)
 
+# @app.route("/register/<eventname>", methods=['POST'])
+# def volReg(eventname):
+#     db.event.update({""})
+    
 
 
 
