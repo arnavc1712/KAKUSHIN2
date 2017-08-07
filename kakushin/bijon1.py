@@ -205,28 +205,17 @@ def eventRegister():
         if session['user'][1]==1:
             content = request.get_json(force=True)
             name= content['eventname']
-            user= session['user'][0]
+            content['user']= session['user'][0]
             minimum = content['minimum']
             maximum = content['maximum']
-            startDate =  datetime.datetime.strptime(content['startdate'], '%d-%m-%y').date().isoformat()
-            endDate = datetime.datetime.strptime(content['enddate'], '%d-%m-%y').date().isoformat()
+            startDate =  datetime.datetime.strptime(content['startdate'], '%d/%m/%Y')
+            endDate = datetime.datetime.strptime(content['enddate'], '%d/%m/%Y')
             details = content['details']
-            traits = list(content['triats'])
-            date = datetime.datetime.strptime(content['date'], '%d-%m-%y').date().isoformat()
+            traits = list(content['traits'])
+            date = datetime.datetime.strptime(content['date'], '%d/%m/%Y')
             try:
-                i_d = db.event.insert(
-                    {
-                    "name":name.replace(" ","-"),
-                    "ngo":user,
-                    "min":minimum,
-                    "max":maximum,
-                    "starts":startDate,
-                    "end":endDate,
-                    "details":details,
-                    "traits":traits,
-                    "date":date,
-                    "count":0
-                    });
+                i_d = db.event.insert(content);
+                print("entered")
                 return jsonify({"status":200})
             except Exception as e:
                 print(str(e), file = sys.stdout)
@@ -241,7 +230,7 @@ def eventRegister():
 def registerEvent(eventname):
     if request.method=='GET':
         try:
-            x = db.event.find_one({"name":eventname},{"ngo":1})
+            x = db.event.find_one({"name":eventname},{"user":1})
 
             if x:
                 #return render_template('register.html')
@@ -252,8 +241,8 @@ def registerEvent(eventname):
         except Exception as e:
             print(str(e), file=sys.stdout)
     else:
-        x = db.event.find_one({"name":eventname},{"end":1,"traits":1,"_id":0})
-        if x['end'].isoformat() > datetime.date.today().isoformat():
+        x = db.event.find_one({"name":eventname},{"endDate":1,"traits":1,"_id":0})
+        if datetime.datetime.strptime(x['endDate'], '%d/%m/%Y') > datetime.datetime.date.today():
             vol = db.volunteers.find_one({"name":content['name']},{"chapter":1,"_id":1,"primary":1})
             chap = db.chapter.find_one({"_id":vol['chapter']})
             if chap:
@@ -264,11 +253,11 @@ def registerEvent(eventname):
 def ngoDashEvents():
     if 'user' in session:
         if session['user'][1]==1:
-            x = db.event.find({"name":session['user'][0]},{"_id":0})
+            x = db.event.find({"user":session['user'][0]},{"_id":0,"name":1,"date":1})
             results =[]
             for row in x:
-                results.append(row)
-                return toJson(results)
+                print(row, file =sys.stdout)
+            return "n"
 
 
 # def getNGO():
@@ -293,7 +282,8 @@ def ngoDashEvents():
 @app.route('/dashboard/', methods=['GET'])
 def dashboard():
     if 'user' in session and session['user'][1]==1:
-        return render_template('dashboard-ngo.html')
+        eventnames = list(db.event.find({"user":session['user'][0]},{"name":1}))
+        return render_template('dashboard-ngo.html', eventnames=eventnames)
 
 
 
