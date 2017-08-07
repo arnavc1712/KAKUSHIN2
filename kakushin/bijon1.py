@@ -42,7 +42,7 @@ bcrypt=Bcrypt(app)
 def start():
     session.pop('user',None)
     print(session, file=sys.stdout)
-    return render_template("login.html")
+    return render_template("home.html")
     # if 'user' in session:
     #     return jsonify({'user':1,"session":session['user']})
     # else:
