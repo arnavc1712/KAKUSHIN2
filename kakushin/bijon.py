@@ -62,7 +62,8 @@ def register():
                         content['pass'] =  bcrypt.generate_password_hash(content['pass']).decode('utf-8')
                         i_d = db.volunteers.insert(content)
                         session['user']= [content['name'],content['role']]
-                        return redirect(url_for('test',testid=(i_d+'')))
+                        location="/test/"+str(i_d)
+                        return jsonify({"location":location,"role":content['role']})
                     else:
                         return jsonify({"error":"Existing User"})
                 elif content['role']==1:
