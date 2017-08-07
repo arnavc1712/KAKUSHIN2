@@ -125,7 +125,7 @@ function ngo_reg(){
 		user["emailid"]=ngo_email;
 		user["pass"]=ngo_password;
 		user["state"]=ngo_state;
-		user["registeration"]=ngo_registeration;
+		user["registration"]=ngo_registeration;
 		user["city"]=ngo_city;
 		user["username"]=ngo_username;
 
