@@ -425,5 +425,4 @@ def badData():
 def toJson(data):
     """Convert Mongo object(s) to JSON"""
     #print(type(data), file=sys.stdout)
->>>>>>> dfb7c2b185f8090cdce3e2f2f99e379937a3b1bc
     return Response(json.dumps(data, default=json_util.default), mimetype='application/json')
