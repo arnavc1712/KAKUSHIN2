@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login</title>
+
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="../static/js//bootstrap.min.js"></script>
+	<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</head>
+<body>
+
+
+<div class="home-header">
+	<div class="main_btn_wrapper">
+		<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#first_login_modal">Login</button>
+		<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#first_register_modal">Register</button>
+	</div>
+</div>
+
+</body>
+</html>
+
+
+
+<!-- BASIC LOGIN MODAL FOR USERS -->
+
+<div id="first_login_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">LOGIN</h4>
+      </div>
+      <div class="modal-body">
+        <form class="first_login_modal_form">
+			<div class="form-group">
+				<div class="login_btn_wrapper">
+					<button type="button" class="btn btn-info btn-lg login volunteer_login" data-toggle="modal" data-target="#second_login_modal">Login as Volunteer</button>
+				</div>
+
+				<br>
+
+				<div class="login_btn_wrapper">
+					<button type="button" class="btn btn-info btn-lg login ngo_login" data-toggle="modal" data-target="#second_login_modal">Login as NGO</button>
+				</div>
+
+				<br>
+
+				<div class="login_btn_wrapper">
+					<button type="button" class="btn btn-info btn-lg login donor_login" data-toggle="modal" data-target="#second_login_modal">Login as Donor</button>
+				</div>
+
+				<br>
+				
+			</div>
+		</form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<!-- BASIC REGISTER MODAL FOR USERS -->
+
+<div id="first_register_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">REGISTER</h4>
+      </div>
+      <div class="modal-body">
+        <form class="first_register_modal_form">
+			<div class="form-group">
+				<div class="register_btn_wrapper">
+					<button type="button" class="btn btn-info btn-lg volunteer_register" data-toggle="modal" data-target="#volunteer_register_modal">Register as Volunteer</button>
+				</div>
+
+				<br>
+
+				<div class="register_btn_wrapper">
+					<button type="button" class="btn btn-info btn-lg ngo_register" data-toggle="modal" data-target="#ngo_register_modal">Register as NGO</button>
+				</div>
+
+				<br>
+
+				<div class="register_btn_wrapper">
+					<button type="button" class="btn btn-info btn-lg donor_register" data-toggle="modal" data-target="#donor_register_modal">Register as Donor</button>
+				</div>
+
+				<br>
+				
+			</div>
+		</form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- COMMON LOGIN MODAL -->
+<div id="second_login_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <form class="second_login_modal_form">
+			  <div class="form-group">
+			    <label for="user_username">Username:</label>
+			    <input type="email" class="form-control" id="user_username">
+			  </div>
+			  <div class="form-group">
+			    <label for="user_pass">Password:</label>
+			    <input type="password" class="form-control" id="user_pass">
+			  </div>
+		
+			  <button type="button" class="btn btn-default user_submit">Submit</button>
+		</form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- VOLUNTEER REGISTER MODAL -->
+<div id="volunteer_register_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Volunteer Register</h4>
+      </div>
+      <div class="modal-body">
+        <form class="volunteer_register_modal_form">
+			  <div class="form-group">
+			    <label for="vol_name">Name:</label>
+			    <input type="text" class="form-control" id="vol_name">
+			  </div>
+
+			  <div class="form-group">
+			    <label for="vol_username">Username:</label>
+			    <input type="text" class="form-control" id="vol_username">
+			  </div>
+
+			  <div class="form-group">
+			    <label for="vol_age">Age:</label>
+			    <input type="number" class="form-control" id="vol_age">
+			  </div>
+			  <div class="form-group">
+			    <label for="vol_email">Email:</label>
+			    <input type="email" class="form-control" id="vol_email">
+			  </div>
+			  <div class="form-group">
+			    <label for="vol_password">Password:</label>
+			    <input type="password" class="form-control" id="vol_password">
+			  </div>
+			  <div class="form-group">
+			    <label for="vol_campus">Campus:</label>
+			    <input type="text" class="form-control" id="vol_campus">
+			  </div>
+			  <div class="form-group">
+			    <label for="vol_city">City:</label>
+			    <input type="text" class="form-control" id="vol_city">
+			  </div>
+			  
+			  <button type="button" class="btn btn-default vol_submit">Submit</button>
+		</form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- NGO REGISTER MODAL -->
+<div id="ngo_register_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">NGO Registeration</h4>
+      </div>
+      <div class="modal-body">
+        <form class="ngo_register_modal_form">
+			  <div class="form-group">
+			    <label for="ngo_name">Name:</label>
+			    <input type="text" class="form-control" id="ngo_name">
+			  </div>
+			  
+			  <div class="form-group">
+			    <label for="ngo_email">Email:</label>
+			    <input type="email" class="form-control" id="ngo_email">
+			  </div>
+			  <div class="form-group">
+			    <label for="ngo_password">Password:</label>
+			    <input type="password" class="form-control" id="ngo_password">
+			  </div>
+			  
+			  <div class="form-group">
+			    <label for="ngo_city">City:</label>
+			    <input type="text" class="form-control" id="ngo_city">
+			  </div>
+
+			  <div class="form-group">
+			    <label for="ngo_state">State:</label>
+			    <input type="text" class="form-control" id="ngo_state">
+			  </div>
+
+			  <div class="form-group">
+			    <label for="ngo_username">Username:</label>
+			    <input type="text" class="form-control" id="ngo_username">
+			  </div>
+
+			  <div class="form-group">
+			    <label for="ngo_registeration">Registeration No:</label>
+			    <input type="number" class="form-control" id="ngo_registeration">
+			  </div>
+
+			  <button type="button" class="btn btn-default ngo_submit">Submit</button>
+		</form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- DONOR REGISTER MODAL -->
+<div id="donor_register_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Donor Registeration</h4>
+      </div>
+      <div class="modal-body">
+        <form class="donor_register_modal_form">
+			<div class="form-group">
+			<label for="donor_name">Name:</label>
+			<input type="text" class="form-control" id="donor_name">
+			</div>
+
+			<div class="form-group">
+			<label for="donor_email">Email:</label>
+			<input type="email" class="form-control" id="donor_email">
+			</div>
+
+			<div class="form-group">
+			<label for="donor_password">Password:</label>
+			<input type="password" class="form-control" id="donor_password">
+			</div>
+
+			<div class="form-group">
+			<label for="donor_username">Username:</label>
+			<input type="text" class="form-control" id="donor_username">
+			</div>
+
+			<div class="form-group">
+			<label for="donor_pancard">Pancard No:</label>
+			<input type="number" class="form-control" id="donor_pancard">
+			</div>
+
+			<button type="button" class="btn btn-default donor_submit">Submit</button>
+		</form>
+      </div>
+    </div>
+
+  </div>
+</div>
