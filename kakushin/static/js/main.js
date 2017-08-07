@@ -190,6 +190,9 @@ function login_AJAX(){
 			success: function(message)
 			{
 				console.log(message);
+				if(message.status==200){
+					window.location.href="/dashboard"
+				}
 				
 				
 			}});

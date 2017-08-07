@@ -93,54 +93,51 @@ def login():
         print(session, file=sys.stdout)
         return "Already in session: %s" % session['user'][0]
     else:
-        if request.method =='GET':
-            return render_template('index.html')
-        else:
-            content = request.get_json(force=True)
-            username = content['username']
-            #print(username, file=sys.stdout)
-            password =content['password']
-            # print(password, file=sys.stdout)
-            # print(request.form['role'], file=sys.stdout)
-            if int(content['role'])==1:
-                pw_hash = db.ngo.find_one({"username":content['username']},{"pass":1,"_id":0,"name":1})
-                print(pw_hash, file=sys.stdout)
-                if pw_hash:
-                    if bcrypt.check_password_hash(pw_hash['pass'],password):
-                        print("Inside login")
-                        session['user']= [pw_hash['name'],1]
-                        return jsonify({"status":200})
-                        #return "Session ngo created"
+        content = request.get_json(force=True)
+        username = content['username']
+        #print(username, file=sys.stdout)
+        password =content['password']
+        # print(password, file=sys.stdout)
+        # print(request.form['role'], file=sys.stdout)
+        if int(content['role'])==1:
+            pw_hash = db.ngo.find_one({"username":content['username']},{"pass":1,"_id":0,"name":1})
+            print(pw_hash, file=sys.stdout)
+            if pw_hash:
+                if bcrypt.check_password_hash(pw_hash['pass'],password):
+                    print("Inside login")
+                    session['user']= [pw_hash['name'],1]
+                    return jsonify({"status":200})
+                    #return "Session ngo created"
 
-                    else:
-                        return jsonify({"login":0})
                 else:
-                    return jsonify({"login":-1})
-            elif int(content['role'])==2:
-                pw_hash = db.donor.find_one({"username":username},{"pass":1,"_id":0,"name":1})
-                if pw_hash:
-                    if bcrypt.check_password_hash(pw_hash['pass'],password):
-                        session['user']= [pw_hash['name'],2]
+                    return jsonify({"login":0})
+            else:
+                return jsonify({"login":-1})
+        elif int(content['role'])==2:
+            pw_hash = db.donor.find_one({"username":username},{"pass":1,"_id":0,"name":1})
+            if pw_hash:
+                if bcrypt.check_password_hash(pw_hash['pass'],password):
+                    session['user']= [pw_hash['name'],2]
+                    return jsonify({"status":200})
+                else:
+                    return jsonify({"login":0})
+            else:
+                return jsonify({"login":-1})
+        elif int(content['role'])==0:
+            pw_hash = db.volunteers.find_one({"username":username},{"pass":1,"_id":0,"name":1,"chapter-head":1})
+            if pw_hash:
+                if bcrypt.check_password_hash(pw_hash['pass'],password):
+                    if pw_hash['chapter-head']:
+                        session['user']= [pw_hash['name'],0]
                         return jsonify({"status":200})
                     else:
-                        return jsonify({"login":0})
+                        return jsonify({"login":-2})
                 else:
-                    return jsonify({"login":-1})
-            elif int(content['role'])==0:
-                pw_hash = db.volunteers.find_one({"username":username},{"pass":1,"_id":0,"name":1,"chapter-head":1})
-                if pw_hash:
-                    if bcrypt.check_password_hash(pw_hash['pass'],password):
-                        if pw_hash['chapter-head']:
-                            session['user']= [pw_hash['name'],0]
-                            return jsonify({"status":200})
-                        else:
-                            return jsonify({"login":-2})
-                    else:
-                        return jsonify({"login":0})
-                else:
-                    return jsonify({"login":-1})
+                    return jsonify({"login":0})
             else:
-                return redirect(url_for('badData'))
+                return jsonify({"login":-1})
+        else:
+            return redirect(url_for('badData'))
 
 
 @app.route('/chapter')
