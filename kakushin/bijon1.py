@@ -238,7 +238,7 @@ def registerEvent(eventname):
                 #     eventnames.append(eventname)
                 print(x)
                 return render_template('event-page.html',eventnames=x)
-                pass
+                
             else:
                 return redirect(url_for("start"))
 
