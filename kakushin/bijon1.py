@@ -109,8 +109,8 @@ def login():
                     if bcrypt.check_password_hash(pw_hash['pass'],password):
                         print("Inside login")
                         session['user']= [pw_hash['name'],1]
-                        #return redirect(url_for('dashboard'))
-                        return "Session ngo created"
+                        return jsonify({"status":200})
+                        #return "Session ngo created"
 
                     else:
                         return jsonify({"login":0})
@@ -121,7 +121,7 @@ def login():
                 if pw_hash:
                     if bcrypt.check_password_hash(pw_hash['pass'],password):
                         session['user']= [pw_hash['name'],2]
-                        return redirect(url_for('dashboard'))
+                        return jsonify({"status":200})
                     else:
                         return jsonify({"login":0})
                 else:
@@ -132,7 +132,7 @@ def login():
                     if bcrypt.check_password_hash(pw_hash['pass'],password):
                         if pw_hash['chapter-head']:
                             session['user']= [pw_hash['name'],0]
-                            return redirect(url_for('dashboard'))
+                            return jsonify({"status":200})
                         else:
                             return jsonify({"login":-2})
                     else:
@@ -220,11 +220,12 @@ def eventRegister():
                     "ngo":user,
                     "min":minimum,
                     "max":maximum,
-                    "starts":ISODate(startDate),
-                    "end":ISODate(endDate),
+                    "starts":startDate,
+                    "end":endDate,
                     "details":details,
                     "traits":traits,
-                    "date":date
+                    "date":date,
+                    "count":0
                     });
                 return jsonify({"status":200})
             except Exception as e:
@@ -289,10 +290,13 @@ def ngoDashEvents():
 #     db.ngolist.insert({"name":name,"reg":reg})
 
 
-@app.route('/dashboard', methods=['POST'])
+@app.route('/dashboard/', methods=['GET'])
 def dashboard():
-    '''Should redirect here once login is completed'''
-    pass
+    if 'user' in session and session['user'][1]==1:
+        return render_template('dashboard-ngo.html')
+
+
+
 
 def confirmation(name, mail, reg, state, city):
     url = "http://"+state+".ngosindia.com/"+city+"-ngos/"
