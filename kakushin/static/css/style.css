@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 .home-header{
 	background-image: url('../img/home-page.jpg');
 	height: 600px;
@@ -27,7 +27,7 @@ body{
 }
 .navbar-inverse .navbar-nav>li>a {
     color: #ffffff;
-=======
+}
 .home-header{
 	background-image: url('../img/home-page.jpg');
 	height: 600px;
@@ -56,5 +56,4 @@ body{
 }
 .navbar-inverse .navbar-nav>li>a {
     color: #ffffff;
->>>>>>> d069738d98f8b9d2d4627566967ef70194e08cba
 }
