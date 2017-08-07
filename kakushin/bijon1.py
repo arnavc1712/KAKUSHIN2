@@ -227,7 +227,8 @@ def eventRegister():
 def registerEvent(eventname):
     if request.method=='GET':
         try:
-            x = db.event.find_one({"name":eventname},{"user":1})
+            x = db.event.find_one({"eventname":eventname},{"user":1})
+            print(x)
 
             if x:
                 #return render_template('register.html')
