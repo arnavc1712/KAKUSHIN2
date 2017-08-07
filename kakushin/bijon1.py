@@ -233,11 +233,11 @@ def registerEvent(eventname):
             print(x)
 
             if x:
-                eventnames=[]
-                for eventname in db.event.find():
-                    eventnames.append(eventname["eventname"])
-
-                return render_template('register.html',eventnames=eventnames)
+                # eventnames=[]
+                # for eventname in db.event.find():
+                #     eventnames.append(eventname)
+                print(x)
+                return render_template('event-page.html',eventnames=x)
                 pass
             else:
                 return redirect(url_for("start"))
@@ -290,8 +290,9 @@ def dashboard():
         # eventnames = db.event.find({"user":session['user'][0]},{"name":1,"_id":0})
         for eventname in db.event.find():
             eventnames.append(eventname["eventname"])
+        return render_template('dashboard-ngo.html', eventnames=eventnames)
     elif 'user' in session and session['user'][1]==0:
-
+        print("FUCK")
         return render_template('dashboard-ngo.html', eventnames=eventnames)
 
 # @app.route("/register/<eventname>", methods=['POST'])
