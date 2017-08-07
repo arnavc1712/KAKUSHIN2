@@ -218,9 +218,9 @@ def eventRegister():
                 print(str(e), file = sys.stdout)
             #createEventURL(id=i_d, eventname=name)
         else:
-            return redirect(url_for('login'))
+            return redirect(url_for('start'))
     else:
-        return redirect(url_for('login'))
+        return redirect(url_for('start'))
 
 
 @app.route("/event/<eventname>", methods=['GET', 'POST'])
