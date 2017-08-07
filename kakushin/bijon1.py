@@ -282,7 +282,7 @@ def dashboard():
         eventnames=[]
         # eventnames = db.event.find({"user":session['user'][0]},{"name":1,"_id":0})
         for eventname in db.event.find():
-            eventnames.append(eventname)
+            eventnames.append(eventname["eventname"])
 
         return render_template('dashboard-ngo.html', eventnames=eventnames)
 
