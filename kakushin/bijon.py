@@ -61,6 +61,7 @@ def register():
                     if db.volunteers.find({"$and":[{'name':{"$eq": content['name']}},{'emailid':{"$eq":content['emailid']}}]}).count()== 0:
                         content['pass'] =  bcrypt.generate_password_hash(content['pass']).decode('utf-8')
                         i_d = db.volunteers.insert(content)
+                        db.volunteers.insert({"chapter-head":0})
                         session['user']= [content['name'],content['role']]
                         location="/test/"+str(i_d)
                         return jsonify({"location":location,"role":content['role']})
