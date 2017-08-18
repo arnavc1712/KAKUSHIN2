@@ -27,6 +27,7 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 from bson import json_util
 import datetime
+# import abort
 #import bcrypt
 from flask.ext.bcrypt import Bcrypt
 import requests, bs4
@@ -41,7 +42,7 @@ bcrypt=Bcrypt(app)
 @app.route('/')
 def start():
     session.pop('user',None)
-    print(session, file=sys.stdout)
+    print(session)
     return render_template("home.html")
     # if 'user' in session:
     #     return jsonify({'user':1,"session":session['user']})
@@ -55,7 +56,7 @@ def register():
     if request.method =='POST':
         if request.is_json:
             content = request.get_json(force=True)
-            #print(content,file=sys.stdout)
+            #print(content)
             if content['role'] in [0,1,2]:
                 if content['role']==0:
                     if db.volunteers.find({"$and":[{'name':{"$eq": content['name']}},{'emailid':{"$eq":content['emailid']}}]}).count()== 0:
@@ -90,18 +91,18 @@ def register():
 @app.route('/login', methods=['GET','POST'])
 def login():
     if 'user' in session:
-        print(session, file=sys.stdout)
+        print(session)
         return "Already in session: %s" % session['user'][0]
     else:
         content = request.get_json(force=True)
         username = content['username']
-        #print(username, file=sys.stdout)
+        #print(username)
         password =content['password']
-        # print(password, file=sys.stdout)
-        # print(request.form['role'], file=sys.stdout)
+        # print(password)
+        # print(request.form['role'])
         if int(content['role'])==1:
             pw_hash = db.ngo.find_one({"username":content['username']},{"pass":1,"_id":0,"name":1})
-            print(pw_hash, file=sys.stdout)
+            print(pw_hash)
             if pw_hash:
                 if bcrypt.check_password_hash(pw_hash['pass'],password):
                     print("Inside login")
@@ -147,7 +148,7 @@ def chapterAssign(testid):
     chapter = db.chapter
     # check for campus
     x = db.volunteers.find_one({"_id":ObjectId(testid)},{"campus":1,"name":1})
-    #print(x,file=sys.stdout)
+    #print(x)
     if db.chapter.find_one({"campus":{"$eq":x['campus']}}):
         print('inside')
         db.chapter.update({"campus":x['campus']},{"$push":{"volunteer":x['_id']}})
@@ -173,7 +174,7 @@ def test(testid):
     ''' Renders the test for the user with 'testid'. Frontend: Then POST data to /test/<testid> to save it on the db.
     Using <testid> along with sessions because of 1. easier 2. easier to manage if the session expires'''
     if 'user' in session:
-        print(session,file=sys.stdout)
+        print(session)
         return jsonify({'user':1,'testid':testid})
     else:
         return jsonify({"user":0,'testid':testid})
@@ -190,7 +191,7 @@ def savetest(testid):
             db.volunteers.update_one({"_id":ObjectId(str(testid))},{"$set":{"primary":contents['primary'],"secondary":contents['secondary']}})
             chapterAssign(testid)
         except Exception as e:
-            print(str(e), file=sys.stdout)
+            print(str(e))
             return jsonify({"error":"DB insert failure"})
     else:
         return redirect(url_for('badData'))
@@ -217,7 +218,7 @@ def eventRegister():
                 print("entered")
                 return jsonify({"status":200})
             except Exception as e:
-                print(str(e), file = sys.stdout)
+                print(str(e))
             #createEventURL(id=i_d, eventname=name)
         else:
             return redirect(url_for('start'))
@@ -239,12 +240,12 @@ def registerEvent(eventname):
                 print(x)
                 return render_template('event-page.html',eventnames=x)
                 
->>>>>>> 734b5e542abadb44aa5b874d6e8e05165c5f6056
             else:
                 return redirect(url_for("start"))
 
         except Exception as e:
-            print(str(e), file=sys.stdout)
+            print(str(e))
+            return ""
     else:
         x = db.event.find_one({"name":eventname},{"endDate":1,"traits":1,"_id":0})
         if datetime.datetime.strptime(x['endDate'], '%d/%m/%Y') > datetime.datetime.date.today():
@@ -261,7 +262,7 @@ def ngoDashEvents():
             x = db.event.find({"user":session['user'][0]},{"_id":0,"name":1,"date":1})
             results =[]
             for row in x:
-                print(row, file =sys.stdout)
+                print(row)
             return "n"
 
 
@@ -293,7 +294,7 @@ def dashboard():
             eventnames.append(eventname["eventname"])
         return render_template('dashboard-ngo.html', eventnames=eventnames)
     elif 'user' in session and session['user'][1]==0:
-        print("FUCK")
+        print("")
         return render_template('dashboard-ngo.html', eventnames=eventnames)
 
 # @app.route("/register/<eventname>", methods=['POST'])
@@ -313,7 +314,7 @@ def confirmation(name, mail, reg, state, city):
     for element in elem:
         ls.append(element.getText().split(',')[0])
 
-    print(ls,file=sys.stdout)
+    print(ls)
     if name in ls:
         #The NGO name has been confirmed. Could not find a link for registration number verification
     # pg = 1
@@ -331,8 +332,8 @@ def confirmation(name, mail, reg, state, city):
     #     for x in range(2,51,5):
     #         reg.append(table[x].getText().lstrip().split(',')[0])
     #     pg+=1
-    # print(names, file=sys.stdout)
-    # print(reg, file=sys.stdout)
+    # print(names)
+    # print(reg)
 
         ngo = db.ngo
         x = ngo.update({"name":{"$eq":name}},{"$set":{"name-verified":True}})
@@ -372,8 +373,8 @@ def adminLogin():
 def volList():
     pageNumber = int(request.headers.get('Pagenumber'))
     pagelimit = int(request.headers.get('Pagelimit'))
-    # print(pageNumber,file=sys.stdout)
-    # print(pagelimit,file=sys.stdout)
+    # print(pageNumber)
+    # print(pagelimit)
     try:
         # print("entered")
         x = db.volunteers.find().sort("name",1).skip((pageNumber-1)*pagelimit).limit(pagelimit)
@@ -422,7 +423,7 @@ def adminRegister():
             try:
                 db.admin.insert({"username":username,"pass":pw_hash,"id":employeeid})
             except Exception as e:
-                print(str(e), file=sys.stdout)
+                print(str(e))
         else:
             return jsonify({"register":0})
 
@@ -433,5 +434,5 @@ def badData():
 
 def toJson(data):
     """Convert Mongo object(s) to JSON"""
-    #print(type(data), file=sys.stdout)
+    #print(type(data))
     return Response(json.dumps(data, default=json_util.default), mimetype='application/json')
